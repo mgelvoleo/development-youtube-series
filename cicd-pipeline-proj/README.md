@@ -82,15 +82,16 @@ source .bash_profile
 
 ## Install Maven Plugin and configure Jenkins for Maven
 
-Step 1: Go back to the Jenkins Server access the public address and login
+### Step 1: Go back to the Jenkins Server access the public address and login
 
-Step 2: Click the Manage Jenkins
+### Step 2: Click the Manage Jenkins
 
     - Click Plugins
         - Avalable plugins
         - Search "maven integration"
         - Install without restart
-Step 3: Go back to Manage Jenkins
+
+### Step 3: Go back to Manage Jenkins
 
     - Click Tools
         - JDK 
@@ -105,7 +106,7 @@ Step 3: Go back to Manage Jenkins
                     - un tick Install automatically "install from apache"
                     - MAVEN_HOME: /opt/maven
                 - Click apply and save    
-Step 3: Go back to Manage Jenkins
+### Step 3: Go back to Manage Jenkins
 
     - Click Plugins
         - Install Plugin
@@ -116,13 +117,13 @@ Step 3: Go back to Manage Jenkins
 
 Note: While restarting go to the terminal install the git in the jenkins because amazon linux by default not install
 
-Stap 4: Access the server
+### Stap 4: Access the server
 
 ```
-yum instal git
+yum install git
 ```
 
-Step 5: Login again in our Jenkins admin and start create new Item
+### Step 5: Login again in our Jenkins admin and start create new Item
 
     - Click "New Item" give the info
         Item Name: Maven-Builder
@@ -140,7 +141,7 @@ Step 5: Login again in our Jenkins admin and start create new Item
         Click apply and save
     - Click the "Build Now"
 
-Step 6: Go back to Maven-Builder Job
+### Step 6: Go back to Maven-Builder Job
 
     - Click the Workspace
         - Click the Webapp 
@@ -150,7 +151,7 @@ Step 6: Go back to Maven-Builder Job
 
 ## Ansible Server Setup and  Ansible Installation
 
-Step 1: Launch a new Intances 
+### Step 1: Launch a new Intances 
 
     Name: ansible-server
     AMI: Amazon Linux 2 AMIA
@@ -158,19 +159,19 @@ Step 1: Launch a new Intances
 
     Click Launch
 
-Step 2: Edit the Inbound Rules
+### Step 2: Edit the Inbound Rules
     
     - Custom TCP
         - Port: 8080-8090
         - Any Rule
     - Save Rules
 
-Step 3: Access the Ansible Server
+### Step 3: Access the Ansible Server
 
     - open the terminal and point the keypair to open the ssh
 
 
-Step 4: Install Ansible
+### Step 4: Install Ansible
 
     - Switch root
     ```
