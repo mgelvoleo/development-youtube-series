@@ -45,5 +45,196 @@ STEP 8: Install the jenkins plugins. provide the information of the users
 
 ## Install and configure the Maven
 
+*  Where going to use the jenkins server for install and setup maven
+
+STEP 1. open the url of https://maven.apache.org/install.html, find the download links and copy the binary. Note: In downloading neet to be in root
+
+STEP 2. Getht the binary
+
+```
+cd /tmp
+wget https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.tar.gz
+tar -xvf apache-maven-3.9.3-bin.tar.gz
+mv apache-maven-3.9.3 /opt/maven
+```
+
+STEP 3: Add bin for maven in our .bash_profile 
+
+```
+~/.bash_profile
+```
+
+at the bottom, add this line
+
+M2_HOME=/opt/maven
+M2=/opt/maven/bin
+JAVA_HOME=/usr/lib/java-11-openjdk-11.0.19.0.7-1.amzn2.0.1.x86_64  note: find / -name java-11*
+
+PATH=$PATH:$HOME/bin:$JAVA_HOME:$M2_HOME:$M2
+
+Save and exit
+
+Reboot the source
+
+```
+source .bash_profile
+```
+
+## Install Maven Plugin and configure Jenkins for Maven
+
+Step 1: Go back to the Jenkins Server access the public address and login
+
+Step 2: Click the Manage Jenkins
+
+    - Click Plugins
+        - Avalable plugins
+        - Search "maven integration"
+        - Install without restart
+Step 3: Go back to Manage Jenkins
+
+    - Click Tools
+        - JDK 
+            - Click the "Add JDK" and provide the info
+                - Name: java11
+                - JAVA_HOME: /usr/lib/jvm/java-11-openjdk-11.0.19.0.7.amzn2.0.1.x86_64
+
+        - Maven
+            - Maven installations
+                - Click "Add Maven" and provide info
+                    - Name: maven
+                    - un tick Install automatically "install from apache"
+                    - MAVEN_HOME: /opt/maven
+                - Click apply and save    
+Step 3: Go back to Manage Jenkins
+
+    - Click Plugins
+        - Install Plugin
+            - Search plugin : github
+                - Disable "Github branch Source Plugin"
+                - Enable "Github plugin"
+            - click Restart Once no job are running
+
+Note: While restarting go to the terminal install the git in the jenkins because amazon linux by default not install
+
+Stap 4: Access the server
+
+```
+yum instal git
+```
+
+Step 5: Login again in our Jenkins admin and start create new Item
+
+    - Click "New Item" give the info
+        Item Name: Maven-Builder
+        Select: Maven project and OK
+        Description: Test Maven Build
+
+        Source Code: Git
+            Repositories URL: http://github.com/sample/apps
+            Brances: main note: depend what you make a default of brances
+
+        Build:
+            Root POM: pom.xml
+            Goal and options: clean install
+
+        Click apply and save
+    - Click the "Build Now"
+
+Step 6: Go back to Maven-Builder Job
+
+    - Click the Workspace
+        - Click the Webapp 
+            - go "target folder"
+                - You will see the build file example webapp.war
 
 
+## Ansible Server Setup and  Ansible Installation
+
+Step 1: Launch a new Intances 
+
+    Name: ansible-server
+    AMI: Amazon Linux 2 AMIA
+    keypair: Yes select your own
+
+    Click Launch
+
+Step 2: Edit the Inbound Rules
+    
+    - Custom TCP
+        - Port: 8080-8090
+        - Any Rule
+    - Save Rules
+
+Step 3: Access the Ansible Server
+
+    - open the terminal and point the keypair to open the ssh
+
+
+Step 4: Install Ansible
+
+    - Switch root
+    ```
+        sudo su
+    ```
+    - Rename the hostname
+
+    ```
+        hostnamectl set-hostname jenkins-server
+    ```
+
+    - add user for ansible
+
+    ```
+        useradd ansadmin
+        passwd ansadmin
+    ```
+
+    - add in our sudoer
+
+    ```
+        visudo
+    ```
+
+    - find the the line "Same thing without a password
+
+        - Add in the line
+            ansadmin ALL=(ALL) NOPASSWD: ALL
+
+
+    - Change the config of the ssh
+
+        ```
+            nano /etc/ssh/sshd_config
+        ```
+    - Find the line "PasswordAuthentication" change the no to yes
+
+    - Restart the sshd deamon
+
+        ```
+            service sshd reload
+        ```     
+
+    - Switch to my new user "ansadmin"
+
+        ```
+            sudo su - ansadmin
+        ```
+
+    - Generate a new sshkeygen
+
+    ```
+    ssh-keygen
+    pwd
+    cd .ssh
+    ls
+    ```
+
+    - Start the install the ansible
+
+    ```
+        sudo su
+        amazon-linux-extras install ansible2
+        ansible --version
+    ```
+
+## Integrate Ansible with Jenkins
