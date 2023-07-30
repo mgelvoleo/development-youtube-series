@@ -239,3 +239,80 @@ yum install git
     ```
 
 ## Integrate Ansible with Jenkins
+
+Step 1: Setting jenkins for Ansible
+
+    > Go to jenkins dashboard
+        > Manage jenkins
+            > System 
+                > Go to Public over SSH
+                    > SSH Server click add button
+                        provide the info
+                        - Name: Ansible-Server
+                        - HOST : IP address
+                        - USER: ansadmin
+                    > Click Advance
+
+                        - thick "Use password authentication or use a different key"
+                        - provide the password
+
+            > Click Apply,  "Test configuration" and SAVE
+
+Step 2: Go the terminal to access the Ansible Server
+
+    Make a folder from opt
+
+    ```
+    cd /opt
+
+    sudo mkdir Docker
+    ```
+
+    Make permission for the folder
+
+    ```
+        sudo chown ansadmin:ansadmin Docker
+        ll
+    ```
+
+Step 3: Create a new Item
+
+    Click the the "New Item"
+        Give the Name: Artifacts_on_ansible
+        project: Maven project
+
+    Click Ok
+
+
+    Configuration
+
+        - Source Code Management
+            - Git
+                - Provide the Repository URL:
+
+        - Branch to build
+            - Branch Specifer
+                - */main
+
+    Build
+        Goals and options
+            - type: clean install
+
+    Post build Actions
+        Add post-build action dropdown
+            - Choose "Send build artifacts over SSH
+
+            SSH Server
+                - Server Name: ansible-server 
+                - Transfer Set Source files
+                    - "webapp/target/*.war
+                - Remove prefix
+                    - "webapp/target
+                - Remote directory
+                    - "//opt//Docker"
+
+        Apply and Save
+
+   Start Build by clicking
+
+   Note: Check this if this will successfully
