@@ -316,3 +316,123 @@ Step 3: Create a new Item
    Start Build by clicking
 
    Note: Check this if this will successfully
+
+
+Step 4: Check the war files that have been build
+
+    go to opt/Docker to check the build of artifacts of application war
+
+    ```
+    cd /opt/Docker
+    date
+    ll
+    ```
+ 
+ ## Install and Configure Docker on Ansible Server
+
+ Step 1:  Go  to ansible server and install the docker
+
+    ```
+    sudo yum install docker
+    id ansadmin
+    sudo usermod -aG docker ansadmin
+    id ansadmin
+    sudo service docker start
+    service docker status
+    reboot
+    sudo service docker start
+    service docker status
+    sudo su - ansadmin
+    cd /opt/Docker
+    nano Dockerfile
+    ```
+
+Step 2: Write the docker file 
+
+    ```
+    FROM tomcat:latest
+    RUN cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps
+    COPY ./*.war /usr/local/tomcat/webapps
+    
+    ```
+
+
+## Create Ansible Playbook to Create Docker Image and Copy Image to DockerHub
+
+
+Step 1: Modify the host of ansible
+
+    Note: get the private IP address of the ansible
+    ```
+    ip add   
+    sudo  nano /etc/ansible/hosts
+    ```
+
+Step 2: Copy the private IP address to hosts
+
+```
+[ansible]
+172.x.x.x
+```
+
+```
+ssh-copy-id 172.x.x.x
+```
+
+Step 3: Create the ansible playbook
+
+```
+nano regapp.yml
+```
+
+
+```
+---
+- hosts: ansible
+  tasks:
+  - name: Create docker image
+    command: docker build -t regapp:latest .
+    args:
+      chdir: /opt/Docker
+```
+
+Run the playbook
+```
+ansible-playbook regapp.yml --check
+ansible-playbook regapp.yml
+```
+
+Register the credential of docker from dockerhub
+
+```
+docker login
+```
+
+
+Modify the regapp.yml playbook and paste the following
+
+```
+---
+- hosts: ansible
+  tasks:
+  - name: Create docker image
+    command: docker build -t regapp:latest .
+    args:
+      chdir: /opt/Docker
+  - name: Create tag to push image onto dockerhub
+    command: docker tag regapp:latest mgelvoleo/reapp:latest
+
+  - name: Push docker image
+    command: docker push mgelvoleo/regapp:latest
+```
+
+
+Check the playbook and run againg
+
+```
+ansible-playbook regapp.yml --check
+
+ansible-playbook regapp.yml 
+
+docker images
+```
