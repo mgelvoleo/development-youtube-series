@@ -28,7 +28,7 @@ In the Jenkins dashboard, go to "Manage Jenkins" > "Manage Plugins."Search for "
 In the Jenkins dashboard, click on "New Item."Choose "Pipeline" and provide a name for your pipeline.Under the "Pipeline" section, select "Pipeline script from SCM."Choose "Git" as the SCM and provide your GitHub repository URL.Specify the script path if necessary (e.g., Jenkinsfile).
 
 ### Step 6: Define Stages in Your Jenkinsfile Here's a simplified example of the stages in your Jenkinsfile:
-
+```
 node {
    stage('Git Checkout') {
        git branch: 'main', url: 'https://github.com/mgelvoleo/docker-jenkins-proj.git'
@@ -58,6 +58,8 @@ node {
        }
    }
 }
+
+```
 
 ### Step 7: Run Your Pipeline After defining your pipeline stages, save the Jenkinsfile and trigger the pipeline manually or configure it to be triggered on code changes.
 
