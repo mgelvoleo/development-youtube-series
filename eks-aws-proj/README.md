@@ -1,7 +1,6 @@
 # EKS AWS Project
 
 ## Step 1
-
 Search for EKS or Elastic Kubernetes
 
 Note: Before interact with the EKS we need to install kubectl, eksctl, aws cli
@@ -15,3 +14,4 @@ Start Creating Cluster
 ```
 eksctl create cluster --name demo-cluster --region us-east-1 --fargate
 ```
+
