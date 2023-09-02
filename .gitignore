@@ -1,0 +1,18 @@
+
+
+# Ignore Terraform state files
+tf-project/*.tfstate
+tf-project/*.tfstate.*
+
+# Ignore .terraform directory and its contents
+tf-project/.terraform/
+
+# Ignore override files within the terraform directory
+tf-project/override.tf
+tf-project/override.tf.json
+
+# Ignore CLI configuration files within the terraform directory
+tf-project/terraform.rc
+
+# Ignore crash log files within the terraform directory
+tf-project/crash.log
