@@ -16,3 +16,6 @@ tf-project/terraform.rc
 
 # Ignore crash log files within the terraform directory
 tf-project/crash.log
+
+
+tf-project/.terraform.lock.hcl
