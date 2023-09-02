@@ -19,4 +19,5 @@
 
 Diagram
 
+![Screenshot_2023-09-01_15-10-07](https://github.com/mgelvoleo/development-youtube-series/assets/21300768/df689193-77f7-4285-a273-2bf42e63a846)
 
